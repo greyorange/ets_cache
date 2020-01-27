@@ -92,6 +92,14 @@ handle_cast({delete, Key}, #cachestate{
     ets:delete(ValueEts, Key),
     gen_server:cast(CheckPid, {delete, Key}),
     {noreply, State};
+
+handle_cast({delete_all}, #cachestate{
+        cacheets = ValueEts,
+        checkpid = CheckPid} = State) ->
+    ets:delete_all_objects(ValueEts),
+    gen_server:cast(CheckPid, {delete_all}),
+    {noreply, State};
+
 handle_cast(stop, #cachestate{
         cacheets = _ValueEts,
         checkpid = CheckPid} = State) ->

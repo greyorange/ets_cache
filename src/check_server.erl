@@ -92,6 +92,11 @@ handle_call(_Msg, _From, State) ->
 handle_cast({delete, Key}, #checkstate{checkets = CheckEts} = State) ->
     ets:delete(CheckEts, Key),
     {noreply, State};
+
+handle_cast({delete_all}, #checkstate{checkets = CheckEts} = State) ->
+    ets:delete_all_objects(CheckEts),
+    {noreply, State};
+
 handle_cast(stop, State) ->
     {stop, normal, State};
 handle_cast(_Msg, State) ->
